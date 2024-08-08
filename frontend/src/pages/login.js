@@ -4,9 +4,10 @@ import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
+  const [error, setError]       = useState('');
+  const router                  = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +19,8 @@ export default function Login() {
     });
 
     if (result?.error) {
-      alert('Login failed. Please try again.'); // Handle error response
+      console.error('Login failed:', result.error);
+      setError('Login failed. Please try again.');
     } else {
       router.push('/hello'); // Redirect to the Hello World page on success
     }
@@ -28,6 +30,7 @@ export default function Login() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Email</label>
