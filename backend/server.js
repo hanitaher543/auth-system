@@ -1,7 +1,7 @@
 // IMPORTS 
 const fastify   = require('fastify') ({logger : true});
 const sequelize = require('./config/database');
-const PORT      = 3000;
+const PORT      = 4000;
 
 
 // Routing
