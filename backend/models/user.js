@@ -21,7 +21,11 @@ const User = sequelize.define('User', {
     password : {
         type : DataTypes.STRING,
         allowNull : false,
-    }
+    },
+    phoneNumber: { // New column for phone number
+    type: DataTypes.STRING,
+    allowNull: false,
+  }
 });
 
 module.exports = User;

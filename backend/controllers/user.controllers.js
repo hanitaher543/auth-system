@@ -7,7 +7,7 @@ const Token          = require('../models/token');
 async function createUser(req, res) {
 
     // Read data from the request body
-    const {fullName, email, password} = req.body;
+    const {fullName, email, password, phoneNumber} = req.body;
     console.log(req.body);
     try{
         // crypt my password
@@ -16,7 +16,8 @@ async function createUser(req, res) {
         const newUser = await User.create({
             fullName,
             email,
-            password : hashedPassword
+            password : hashedPassword,
+            phoneNumber
         });
 
         res.status(200).send({message: 'User registered successfully', user: newUser});
