@@ -2,46 +2,53 @@ import { useState } from 'react';
 import 'tailwindcss/tailwind.css';
 
 export default function Register() {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [fullName, setFullName]             = useState('');
+  const [email, setEmail]                   = useState('');
+  const [password, setPassword]             = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    // Check if passwords match
     if (password !== repeatPassword) {
       alert("Passwords do not match!");
       return;
     }
-    
-    const res = await fetch('/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ fullName, email, password }),
-    });
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error('Error response:', errorText);
-      alert('An error occurred while registering. Please try again.');
-      return;
-    }
-
-    let data;
+  
     try {
-      data = await res.json();
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          fullName, 
+          email, 
+          password 
+        }),
+      });
+  
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Error response:', errorText);
+        alert('An error occurred while registering. Please try again.');
+        return;
+      }
+  
+      const data = await res.json(); // Ensure the response is valid JSON
+  
+      // Handle successful registration here
+      alert('Registration successful! Welcome, ' + data.fullName); 
+      router.push('/login'); // Redirect after successful registration
+  
     } catch (error) {
-      console.error('Failed to parse JSON:', error);
-      alert('An error occurred while processing the response. Please try again.');
-      return;
+      console.error('Error during registration:', error);
+      alert('An unexpected error occurred. Please try again later.');
     }
-
-    // Handle successful registration here (e.g., redirect)
   };
+  
 
-  // Ensure that the return statement for the component is correctly placed
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">

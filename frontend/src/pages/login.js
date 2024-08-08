@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -10,22 +11,16 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
+    const result = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
     });
 
-    if (res.ok) {
-      // Assuming the login is successful
-      router.push('/hello'); // Redirect to the Hello World page
+    if (result?.error) {
+      alert('Login failed. Please try again.'); // Handle error response
     } else {
-      // Handle error response
-      const errorText = await res.text();
-      console.error('Error response:', errorText);
-      alert('Login failed. Please try again.');
+      router.push('/hello'); // Redirect to the Hello World page on success
     }
   };
 
