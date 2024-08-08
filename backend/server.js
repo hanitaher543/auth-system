@@ -1,7 +1,6 @@
 // IMPORTS 
 const fastify = require('fastify') ({logger : true});
 const sequelize = require('./config/database');
-const sequelize = require('./config/database')
 const PORT = 3000;
 
 
@@ -9,10 +8,7 @@ const PORT = 3000;
 fastify.register(require('./routes/router'));
 
 
-
-
 // Run server and connect to db
-
 const start = async () =>{
 
     try{
