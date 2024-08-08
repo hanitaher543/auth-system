@@ -2,21 +2,21 @@
   "development": {
     "username": "hani",
     "password": "123456",
-    "database": "dbProject-Auth",
+    "database": "BD-auth-system",
     "host": "localhost",
     "dialect": "postgres"
   },
   "test": {
     "username": "hani",
     "password": "123456",
-    "database": "dbProject-Auth",
+    "database": "BD-auth-system",
     "host": "localhost",
     "dialect": "postgres"
   },
   "production": {
     "username": "hani",
     "password": "123456",
-    "database": "dbProject-Auth",
+    "database": "BD-auth-system",
     "host": "localhost",
     "dialect": "postgres"
   }

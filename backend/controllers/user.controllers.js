@@ -1,21 +1,20 @@
-const User = require('../models/user');
-const Token = require('../models/token'); 
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
+const bcrypt         = require('bcrypt');
+const jwt            = require('jsonwebtoken');
+const User           = require('../models/user');
+const Token          = require('../models/token');
 
 // API REST POST : RESGISTER
 async function createUser(req, res) {
 
     // Read data from the request body
-    const {fullname, email, password} = req.body;
+    const {fullName, email, password} = req.body;
     console.log(req.body);
     try{
         // crypt my password
         const hashedPassword = await bcrypt.hash(password, 10);
         // Create an instance of my User model
         const newUser = await User.create({
-            fullname,
+            fullName,
             email,
             password : hashedPassword
         });
@@ -60,5 +59,7 @@ async function login(req, res) {
     
 };
 
-module.exports = createUser;
-module.exports = login;
+module.exports = {
+    createUser,
+    login
+};

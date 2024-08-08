@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize('dbProject-Auth','hani','123456',{
+const sequelize = new Sequelize('BD-auth-system','hani','123456',{
     host : 'localhost',
     dialect :'postgres'
 });
