@@ -15,9 +15,7 @@ const start = async () =>{
         await fastify.listen({ port : PORT});
         console.log(`Server is running on port ${PORT}`);
         await sequelize.authenticate(); // verifies the connection to the Sequelize database 
-        console.log('Connection has been established successfully!!');
-        await sequelize.authenticate(); //verifies the connection to the Sequelize database 
-        console.log('Connection has been established successfully!!');       
+        console.log('Connection has been established successfully!!');      
 
     } catch(error){
         console.log(`Server failed to start on port ${PORT}`);
