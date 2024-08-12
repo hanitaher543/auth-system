@@ -29,44 +29,45 @@ async function createUser(req, res) {
 };
 
 async function login(req, res) {
-
-     // Read data from the request body
-     const {email, password} = req.body;
-     try{
-        // Get user by email from DB 
-        const user = await User.findOne({where :{email}});
-        // Check if user exist or no from db using email
-        if(!user){
-            return res.status(404).send({ message : "Email invalid !"});
-        };
-        // Check if user exist or no from db using password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-            if(!isPasswordValid){
-                return res.code(404).send({ error: 'Invalid Password !' });
-            }
-
-         // Access Token & Refresh Token
-         const accessToken   =   jwt.sign({ id: user.id }, 'mkljbhghvbkjcghjklmlkjhghj',  { expiresIn: '15m' });
-         const refreshToken  =   jwt.sign({ id: user.id }, 'kjhvcxcfghjkjhgghjkllkjhgvc', { expiresIn: '7d' });
-         // Change create by update token who to log -revocte --> if log out - active
-         //await Token.create({accessToken : accessToken , refreshToken : refreshToken,  userId : user.id})
-         // on va upadte pour le token --> if token registered from da
-         await Token.update( {
-              accessToken: accessToken,
-              refreshToken: refreshToken, },
-            {
-              where: { userId: user.id },
-            }
-          )
-
-         res.status(200).send({message : 'Login successful', accessToken, refreshToken});    
-
-
-     }catch(error){
-        res.status(500).send({error: 'Login failed', details: error});
-     }
+    // Read data from the request body
+    const { email, password } = req.body;
     
-};
+    try {
+      // Get user by email from DB 
+      const user = await User.findOne({ where: { email } });
+      
+      // Check if user exists or not from db using email
+      if (!user) {
+        return res.status(404).send({ message: "Email invalid !" });
+      }
+  
+      // Check if password is valid
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).send({ error: 'Invalid Password !' });
+      }
+  
+      // Revoke existing tokens for the user
+      await Token.update({ state: 'revoked' }, { where: { userId: user.id } });
+  
+      // Create new access token
+      const token = jwt.sign({ id: user.id }, 'mkljbhghvbkjcghjklmlkjhghj', { expiresIn: '15m' });
+      
+      // Create a new token entry in the database
+      await Token.create({
+        token,
+        userId: user.id,
+        state: 'active'
+      });
+  
+      // Send response with user details and token
+      res.status(200).send({ message: 'Login successful', id: user.id, email: user.email, token });
+    
+    } catch (error) {
+      res.status(500).send({ error: 'Login failed', details: error });
+    }
+  };
+  
 
 module.exports = {
     createUser,
