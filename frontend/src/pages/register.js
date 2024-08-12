@@ -30,6 +30,7 @@ export default function Register() {
           password 
         }),
       });
+      console.log(res)
 
       if (!res.ok) {
         const errorText = await res.text();

@@ -8,11 +8,11 @@ const Token = sequelize.define('Token',{
         autoIncrement : true,
         primaryKey : true,
     },
-    accessToken :{
+    token :{
         type: DataTypes.STRING,
         allowNull: false,
     },
-    refreshToken: {
+    state: {
         type: DataTypes.STRING,
         allowNull: false,
       },

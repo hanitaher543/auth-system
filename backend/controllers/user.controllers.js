@@ -48,8 +48,16 @@ async function login(req, res) {
          // Access Token & Refresh Token
          const accessToken   =   jwt.sign({ id: user.id }, 'mkljbhghvbkjcghjklmlkjhghj',  { expiresIn: '15m' });
          const refreshToken  =   jwt.sign({ id: user.id }, 'kjhvcxcfghjkjhgghjkllkjhgvc', { expiresIn: '7d' });
-
-         await Token.create({accessToken : accessToken , refreshToken : refreshToken,  userId : user.id})
+         // Change create by update token who to log -revocte --> if log out - active
+         //await Token.create({accessToken : accessToken , refreshToken : refreshToken,  userId : user.id})
+         // on va upadte pour le token --> if token registered from da
+         await Token.update( {
+              accessToken: accessToken,
+              refreshToken: refreshToken, },
+            {
+              where: { userId: user.id },
+            }
+          )
 
          res.status(200).send({message : 'Login successful', accessToken, refreshToken});    
 
