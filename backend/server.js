@@ -2,7 +2,12 @@
 const fastify   = require('fastify') ({logger : true});
 const sequelize = require('./config/database');
 const PORT      = 4000;
+const fastifyJwt = require('fastify-jwt');
 
+// Register the JWT plugin
+fastify.register(fastifyJwt, {
+    secret: 'b1f1b7ec5e1a4f5d8bfc1f2e1b4a6b1c',
+});
 
 // Routing
 fastify.register(require('./routes/router'));

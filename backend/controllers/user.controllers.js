@@ -3,6 +3,7 @@ const jwt            = require('jsonwebtoken');
 const User           = require('../models/user');
 const Token          = require('../models/token');
 
+
 // API REST POST : RESGISTER
 async function createUser(req, res) {
 
@@ -60,16 +61,43 @@ async function login(req, res) {
         state: 'active'
       });
   
-      // Send response with user details and token
-      res.status(200).send({ message: 'Login successful', id: user.id, email: user.email, token });
+      // Response
+      res.status(200).send({
+        message: 'Login successful',
+        user: { id: user.id, fullName: user.fullName, email: user.email },
+        token,
+      });
+    console.log( token )
     
     } catch (error) {
       res.status(500).send({ error: 'Login failed', details: error });
     }
   };
+
+
+// API REST POST: LOGOUT
+async function logout(req, res) {
+
+  const { token } = req.body; 
+
+  if (!token) {
+      return res.status(400).send({ error: 'Token is required' });
+  }
+
+  try {
+      // Vérifiez le token 
+      await Token.update({ state: 'revoked' }, { where: { token } });
+
+      res.status(200).send({ success: true, message: 'Logout successful' });
+  } catch (error) {
+      console.error('Error occurred during logout:', error);
+      res.status(500).send({ error: 'Logout failed', details: error.message });
+  }
+}
   
 
 module.exports = {
     createUser,
-    login
+    login,
+    logout
 };

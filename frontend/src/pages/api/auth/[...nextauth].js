@@ -33,8 +33,14 @@ export default NextAuth({
         console.log('User Response:', user); // Log user response
     
         if (user) {
-            return user; // Return the user object
+          return {
+            id: user.user.id,
+            fullName: user.user.fullName,
+            email: user.user.email,
+            token: user.token, // Assurez-vous que vous renvoyez `token` ici
+          };
         }
+        
     
         return null; // Return null for invalid credentials
     }
@@ -48,14 +54,14 @@ export default NextAuth({
     async jwt({ token, user }) {
       // Persist the access token to the JWT
       if (user) {
-        token.accessToken = user.accessToken;
+        token.token = user.token;
       }
       return token;
     },
     async session({ session, token }) {
       // Add access token to session
       if (token) {
-        session.accessToken = token.accessToken;
+        session.token = token.token;
       }
       return session;
     },

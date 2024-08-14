@@ -13,6 +13,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "fastify": "^4.28.1",
+    "fastify-jwt": "^4.2.0",
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.4",
     "pg": "^8.12.0",

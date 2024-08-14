@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import { useRouter } from 'next/router';
-import { signIn } from 'next-auth/react';
+import { signIn,getSession } from 'next-auth/react';
 
 export default function Login() {
   const [email, setEmail]       = useState('');
@@ -11,21 +11,32 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const result = await signIn('credentials', {
       redirect: false,
       email,
       password,
     });
-    console.log(result)
-
+  
+    console.log(result); // Ajoutez ce log pour voir la structure de `result`
+  
     if (result?.error) {
       console.error('Login failed:', result.error);
       setError('Login failed. Please try again.');
     } else {
-      router.push('/hello'); // Redirect to the Hello World page on success
+      // Maintenant, récupérez la session pour obtenir le token
+      const session = await getSession(); // Importez getSession depuis 'next-auth/react'
+  
+      if (session) {
+        localStorage.setItem('token', session.token); // Récupérez le token de la session
+        localStorage.setItem('email', email);
+  
+        // Redirect to the Hello World page on success
+        router.push('/hello');
+      }
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
