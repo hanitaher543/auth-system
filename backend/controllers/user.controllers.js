@@ -1,4 +1,4 @@
-const bcrypt         = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt            = require('jsonwebtoken');
 const User           = require('../models/user');
 const Token          = require('../models/token');
@@ -12,12 +12,12 @@ async function createUser(req, res) {
     console.log(req.body);
     try{
         // crypt my password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        //const hashedPassword = await bcrypt.hash(password, 10);
         // Create an instance of my User model
         const newUser = await User.create({
             fullName,
             email,
-            password : hashedPassword,
+            password: hashedPassword,
             phoneNumber
         });
 
@@ -43,10 +43,10 @@ async function login(req, res) {
       }
   
       // Check if password is valid
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+     const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         return res.status(401).send({ error: 'Invalid Password !' });
-      }
+      } 
   
       // Revoke existing tokens for the user
       await Token.update({ state: 'revoked' }, { where: { userId: user.id } });

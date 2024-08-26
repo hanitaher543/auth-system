@@ -3,21 +3,21 @@
     "username": "hani",
     "password": "123456",
     "database": "BD-auth-system",
-    "host": "localhost",
+    "host": "backend-database",
     "dialect": "postgres"
   },
   "test": {
     "username": "hani",
     "password": "123456",
     "database": "BD-auth-system",
-    "host": "localhost",
+    "host": "backend-database",
     "dialect": "postgres"
   },
   "production": {
     "username": "hani",
     "password": "123456",
     "database": "BD-auth-system",
-    "host": "localhost",
+    "host": "backend-database",
     "dialect": "postgres"
   }
 }
